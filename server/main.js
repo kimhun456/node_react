@@ -11,7 +11,6 @@ import session from 'express-session';
 
 // import Routers
 import api from './routes';
-app.use('/api', api);
 
 // database connection
 const db = mongoose.connection;
@@ -26,9 +25,6 @@ const app = express();
 const port = 3000;
 
 
-//router setting
-app.use('/', express.static(path.join(__dirname, './../public')));
-
  // adapt Middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -38,9 +34,16 @@ app.use(session({
     saveUninitialized : true
 }));
 
-app.get('/hello', (req, res) => {
-    return res.send('Hello CodeLab');
+// handle error 
+app.use((err,req,res,next) =>{
+    console.error(err.stack);
+    res.status(500).send("Something Broke!!");
 });
+
+//router setting
+app.use('/', express.static(path.join(__dirname, './../public')));
+app.use('/api', api);
+
 
 app.listen(port, () => {
     console.log('Express is listening on port', port);
