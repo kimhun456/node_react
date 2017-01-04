@@ -55,16 +55,6 @@ var devPort = 4000;
 var app = (0, _express2.default)();
 var port = 3000;
 
-//router setting
-app.use('/', _express2.default.static(_path2.default.join(__dirname, './../public')));
-app.use('/api', _routes2.default);
-
-// handle error 
-app.use(function (err, req, res, next) {
-    console.error(err.stack);
-    res.status(500).send("Something Broke!!");
-});
-
 // adapt Middlewares
 app.use((0, _morgan2.default)('dev'));
 app.use(_bodyParser2.default.json());
@@ -74,9 +64,15 @@ app.use((0, _expressSession2.default)({
     saveUninitialized: true
 }));
 
-app.get('/hello', function (req, res) {
-    return res.send('Hello CodeLab');
+// handle error 
+app.use(function (err, req, res, next) {
+    console.error(err.stack);
+    res.status(500).send("Something Broke!!");
 });
+
+//router setting
+app.use('/', _express2.default.static(_path2.default.join(__dirname, './../public')));
+app.use('/api', _routes2.default);
 
 app.listen(port, function () {
     console.log('Express is listening on port', port);
