@@ -1,2 +1,4 @@
 import Header from './Header';
-export {Header};
+import Authentication from './Authentication';
+
+export {Header, Authentication};
